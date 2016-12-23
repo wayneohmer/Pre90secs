@@ -64,11 +64,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         
-        if let vc = self.window?.rootViewController as? P9STimerController {
-            if vc.timer == nil {
-                vc.reset()
-            }
-        }
         
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }

@@ -11,16 +11,16 @@ import UIKit
 struct P9SlogEntry  {
     
     var date = Date()
-    var exersize = ""
+    var exersises = ""
     var note = ""
 
     init() {
     }
     
-    init(date:Date, exersize:String, note:String) {
+    init(date:Date, exersises:String, note:String) {
         self.date = date
         self.note = note
-        self.exersize = exersize
+        self.exersises = exersises
     }
     
 }

@@ -12,26 +12,39 @@ class P9SLogEntryController: UITableViewController {
 
     @IBOutlet var headerView: UIView!
     @IBOutlet weak var addNoteButton: UIButton!
-    @IBOutlet weak var addExersizeButton: UIButton!
+    @IBOutlet weak var addexersiseButton: UIButton!
     @IBOutlet weak var dateTextView: P9SDateTextField!
     
-    var selectedIndexes = Set<IndexPath>()
+    var selectedExersises = Set<String>()
     var thisEntry = P9SlogEntry()
     var isManualEntry = false
+    var isEdit = false
+    var editIndex = Int(0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.addNoteButton.layer.borderColor = self.addNoteButton.currentTitleColor.cgColor
         self.addNoteButton.layer.borderWidth = 2
         self.addNoteButton.layer.cornerRadius = 10
-        self.addExersizeButton.layer.borderColor = self.addExersizeButton.currentTitleColor.cgColor
-        self.addExersizeButton.layer.borderWidth = self.addNoteButton.layer.borderWidth
-        self.addExersizeButton.layer.cornerRadius = self.addNoteButton.layer.cornerRadius
+        self.addexersiseButton.layer.borderColor = self.addexersiseButton.currentTitleColor.cgColor
+        self.addexersiseButton.layer.borderWidth = self.addNoteButton.layer.borderWidth
+        self.addexersiseButton.layer.cornerRadius = self.addNoteButton.layer.cornerRadius
         
         if isManualEntry {
-            self.dateTextView.text = ""
             self.dateTextView.isUserInteractionEnabled = true
-            self.dateTextView.becomeFirstResponder()            
+            self.dateTextView.becomeFirstResponder()
+        } else if isEdit {
+            self.thisEntry = P9SGlobals.log[self.editIndex]
+            self.dateTextView.isUserInteractionEnabled = true
+            let exersises = self.thisEntry.exersises.components(separatedBy: ", ")
+            for exersise in exersises {
+                if exersise != "" {
+                    self.selectedExersises.update(with: exersise)
+                }
+            }
+            self.dateTextView.datePicker.date = self.thisEntry.date
+            self.dateTextView.text = self.thisEntry.date.formatedDateTime()
+            self.fixNoteButtonTitle()
         } else {
             if let logEnry = P9SGlobals.log.last {
                 self.thisEntry = logEnry
@@ -42,6 +55,82 @@ class P9SLogEntryController: UITableViewController {
         self.tableView.tableFooterView = UIView()
         
     }
+    
+    func fixNoteButtonTitle() {
+        if thisEntry.note != "" {
+            self.addNoteButton.setTitle("   Edit Note   ", for: .normal)
+        } else {
+            self.addNoteButton.setTitle("   Add Note   ", for: .normal)
+        }
+    }
+    
+    @IBAction func addNoteTouched(_ sender: Any) {
+        
+        self.dateTextView.resignFirstResponder()
+        let alertView = UIAlertController(title: "Note", message: "", preferredStyle: .alert)
+        alertView.addTextField(configurationHandler: { textField in
+            textField.keyboardAppearance = .dark
+            textField.autocorrectionType = .yes
+            textField.text = self.thisEntry.note
+        })
+        alertView.addAction(UIAlertAction(title: "Save", style: .default, handler: { [weak alertView] _ in
+            if let noteText = alertView?.textFields?[0].text {
+                self.thisEntry.note = noteText
+                self.fixNoteButtonTitle()
+            }
+        }))
+        alertView.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
+        
+        self.present(alertView, animated: true, completion: nil)
+        
+    }
+    
+    @IBAction func newexersisetouched(_ sender: UIButton) {
+        
+        self.dateTextView.resignFirstResponder()
+        
+        let alertView = UIAlertController(title: "New exersise", message: "", preferredStyle: .alert)
+        alertView.addTextField(configurationHandler: nil)
+        alertView.addAction(UIAlertAction(title: "Save", style: .default, handler: { [weak alertView] _ in
+            if let exersiseText = alertView?.textFields?[0].text {
+                if exersiseText != "" {
+                    P9SGlobals.exersises.append(exersiseText)
+                    P9SGlobals.exersises.sort()
+                    self.selectedExersises.update(with: exersiseText)
+                    self.tableView.reloadData()
+                }
+            }
+        }))
+        alertView.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
+        
+        self.present(alertView, animated: true, completion: nil)
+        
+    }
+    
+    @IBAction func saveTuched(_ sender: UIBarButtonItem) {
+        
+        var exersises = ""
+        for exersise in self.selectedExersises {
+            exersises += "\(exersise), "
+        }
+        if exersises != "" {
+            self.thisEntry.exersises = exersises.substring(to: exersises.index(exersises.endIndex, offsetBy: -2))
+        }
+        if self.isManualEntry {
+            self.thisEntry.date = self.dateTextView.datePicker.date
+            P9SGlobals.log.append(self.thisEntry)
+            _ = self.navigationController?.popViewController(animated: true)
+        } else if self.isEdit {
+            self.thisEntry.date = self.dateTextView.datePicker.date
+            P9SGlobals.log[self.editIndex] = self.thisEntry
+            _ = self.navigationController?.popViewController(animated: true)
+
+        } else {
+            P9SGlobals.log[P9SGlobals.log.count-1] = self.thisEntry
+            self.performSegue(withIdentifier: "DetailEntryExit", sender: nil)
+        }
+    }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -55,58 +144,17 @@ class P9SLogEntryController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return P9SGlobals.exersizes.count
+        return P9SGlobals.exersises.count
     }
-    @IBAction func addNoteTouched(_ sender: Any) {
         
-        let alertView = UIAlertController(title: "Note", message: "", preferredStyle: .alert)
-        alertView.addTextField(configurationHandler: { textField in
-            textField.keyboardAppearance = .dark
-            textField.autocorrectionType = .yes
-            textField.text = self.thisEntry.note
-        })
-        alertView.addAction(UIAlertAction(title: "Save", style: .default, handler: { [weak alertView] _ in
-            if let noteText = alertView?.textFields?[0].text {
-                self.thisEntry.note = noteText
-            }
-        }))
-        alertView.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
-        
-        self.present(alertView, animated: true, completion: nil)
-
-    }
-
-    @IBAction func newExersizetouched(_ sender: UIButton) {
-        
-        let alertView = UIAlertController(title: "New Exersize", message: "", preferredStyle: .alert)
-        alertView.addTextField(configurationHandler: nil)
-        alertView.addAction(UIAlertAction(title: "Save", style: .default, handler: { [weak alertView] _ in
-            if let exersizeText = alertView?.textFields?[0].text {
-                if exersizeText != "" {
-                    P9SGlobals.exersizes.append(exersizeText)
-                    P9SGlobals.exersizes.sort()
-                    if let newIndex = P9SGlobals.exersizes.index(of: exersizeText) {
-                        let indexPath = IndexPath(item: newIndex, section: 0)
-                        self.selectedIndexes.update(with: indexPath)
-                    }
-                    self.tableView.reloadData()
-                }
-            }
-        }))
-        alertView.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
-
-        self.present(alertView, animated: true, completion: nil)
-        
-    }
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         let cell = UITableViewCell()
         
         cell.backgroundColor = UIColor.black
         cell.textLabel?.textColor = UIColor.white
-        cell.textLabel?.text = P9SGlobals.exersizes[indexPath.item]
-        if selectedIndexes.contains(indexPath) {
+        cell.textLabel?.text = P9SGlobals.exersises[indexPath.item]
+        if selectedExersises.contains(P9SGlobals.exersises[indexPath.item]) {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none
@@ -116,77 +164,27 @@ class P9SLogEntryController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        self.dateTextView.resignFirstResponder()
         let cell = tableView.cellForRow(at: indexPath)
-        if self.selectedIndexes.contains(indexPath) {
-            self.selectedIndexes.remove(indexPath)
+        if self.selectedExersises.contains(P9SGlobals.exersises[indexPath.item]) {
+            self.selectedExersises.remove(P9SGlobals.exersises[indexPath.item])
             cell?.accessoryType = .none
         } else {
-            self.selectedIndexes.update(with: indexPath)
+            self.selectedExersises.update(with: P9SGlobals.exersises[indexPath.item])
             cell?.accessoryType = .checkmark
         }
         self.tableView.deselectRow(at: indexPath, animated: true)
     }
-    
-    @IBAction func saveTuched(_ sender: UIBarButtonItem) {
-        
-        var exersises = ""
-        for indexPath in self.selectedIndexes {
-            exersises += "\(P9SGlobals.exersizes[indexPath.item]), "
-        }
-        if exersises != "" {
-            self.thisEntry.exersize = exersises.substring(to: exersises.index(exersises.endIndex, offsetBy: -2))
-        }
-        if self.isManualEntry {
-            self.thisEntry.date = self.dateTextView.datePicker.date
-            P9SGlobals.log.append(self.thisEntry)
-            _ = self.navigationController?.popViewController(animated: true)
-        } else {
-            P9SGlobals.log[P9SGlobals.log.count-1] = self.thisEntry
-            self.performSegue(withIdentifier: "DetailEntryExit", sender: nil)
-        }
-    }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
 
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            P9SGlobals.exersizes.remove(at: indexPath.row)
-            self.selectedIndexes.remove(indexPath)
+            self.selectedExersises.remove(P9SGlobals.exersises[indexPath.row])
+            P9SGlobals.exersises.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }   
     }
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

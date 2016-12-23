@@ -30,6 +30,7 @@
 		CDD9930A1E09FE0C00820AE5 /* P9SLogEntryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD993091E09FE0C00820AE5 /* P9SLogEntryController.swift */; };
 		CDD9930C1E0B0DCA00820AE5 /* P9SLogCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD9930B1E0B0DCA00820AE5 /* P9SLogCell.swift */; };
 		CDD9930F1E0B4EED00820AE5 /* P9SDateTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD9930E1E0B4EED00820AE5 /* P9SDateTextField.swift */; };
+		CDF2BF391E0C87C300885F3E /* P9SEditExersisesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF2BF381E0C87C300885F3E /* P9SEditExersisesController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		CDD993091E09FE0C00820AE5 /* P9SLogEntryController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = P9SLogEntryController.swift; sourceTree = "<group>"; };
 		CDD9930B1E0B0DCA00820AE5 /* P9SLogCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = P9SLogCell.swift; sourceTree = "<group>"; };
 		CDD9930E1E0B4EED00820AE5 /* P9SDateTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = P9SDateTextField.swift; sourceTree = "<group>"; };
+		CDF2BF381E0C87C300885F3E /* P9SEditExersisesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = P9SEditExersisesController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,13 +117,12 @@
 				CD917E311E030C87009F2138 /* P9STimerController.swift */,
 				CD5F81C11E089BDA009AB07C /* P9SFinishedWordsController.swift */,
 				CDD993031E09AB1800820AE5 /* P9SMaxTimeController.swift */,
+				CDF2BF381E0C87C300885F3E /* P9SEditExersisesController.swift */,
 				CDD9930D1E0B0DD200820AE5 /* Log */,
 				CD0B81851E088B13003D5F7F /* Speak Times */,
 				CD19E3A31E0616C200DDBECA /* Image Views */,
 				CD0B81861E088C42003D5F7F /* P9SGlobals.swift */,
-				CD5F81C31E08A2EA009AB07C /* P9SRoundButton.swift */,
-				CDD993051E09B44500820AE5 /* P9SlogEntry.swift */,
-				CDD9930E1E0B4EED00820AE5 /* P9SDateTextField.swift */,
+				CDD993101E0C49DB00820AE5 /* Custom controls */,
 				CD917E361E030C87009F2138 /* Assets.xcassets */,
 				CD917E471E032D20009F2138 /* images */,
 				CD917E381E030C87009F2138 /* LaunchScreen.storyboard */,
@@ -146,8 +147,18 @@
 				CDD993091E09FE0C00820AE5 /* P9SLogEntryController.swift */,
 				CDD993071E09B5A400820AE5 /* P9SLogController.swift */,
 				CDD9930B1E0B0DCA00820AE5 /* P9SLogCell.swift */,
+				CDD993051E09B44500820AE5 /* P9SlogEntry.swift */,
 			);
 			name = Log;
+			sourceTree = "<group>";
+		};
+		CDD993101E0C49DB00820AE5 /* Custom controls */ = {
+			isa = PBXGroup;
+			children = (
+				CD5F81C31E08A2EA009AB07C /* P9SRoundButton.swift */,
+				CDD9930E1E0B4EED00820AE5 /* P9SDateTextField.swift */,
+			);
+			name = "Custom controls";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -237,6 +248,7 @@
 				CD0B81841E088B0E003D5F7F /* P9SSpeakTimesCell.swift in Sources */,
 				CDD9930A1E09FE0C00820AE5 /* P9SLogEntryController.swift in Sources */,
 				CD917E321E030C87009F2138 /* P9STimerController.swift in Sources */,
+				CDF2BF391E0C87C300885F3E /* P9SEditExersisesController.swift in Sources */,
 				CDD9930C1E0B0DCA00820AE5 /* P9SLogCell.swift in Sources */,
 				CD5F81C21E089BDA009AB07C /* P9SFinishedWordsController.swift in Sources */,
 				CD917E301E030C87009F2138 /* AppDelegate.swift in Sources */,

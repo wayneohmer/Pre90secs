@@ -25,25 +25,29 @@ class P9SDateTextField: UITextField {
     
     func initDatePicker() {
         
-        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 0, height: 44))
-        
+        let toolBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: 0, height: 44))
+        let navItem = UINavigationItem()
+        toolBar.barStyle = .black
+        toolBar.barTintColor = UIColor.darkGray
+        toolBar.tintColor = UIColor.white
         toolBar.isTranslucent = true
+        
+        navItem.title = "Date"
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(self.doneButtonTouched))
-        let flexibleSeparator = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        toolBar.items = [doneButton,flexibleSeparator]
+        navItem.leftBarButtonItem = doneButton
+        toolBar.items = [navItem]
         self.inputAccessoryView = toolBar
         
         self.datePicker.datePickerMode = .dateAndTime
         self.datePicker.addTarget(self, action: #selector(self.dateUpdated), for: .valueChanged)
         self.datePicker.maximumDate = Date()
         self.inputView = self.datePicker
-        
+        self.text = Date().formatedDateTime()
         
     }
     
     func dateUpdated(datePicker:UIDatePicker) {
-        
-        self.text = "\(self.datePicker.date.formattedDate()) \(self.datePicker.date.formattedTime())"
+        self.text = datePicker.date.formatedDateTime()
     }
     
     func doneButtonTouched() {

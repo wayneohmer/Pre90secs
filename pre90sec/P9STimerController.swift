@@ -23,6 +23,8 @@ class P9STimerController: UIViewController {
     @IBOutlet weak var settingsButton: P9SRoundButton!
     @IBOutlet weak var logButton: P9SRoundButton!
     @IBOutlet weak var addDetailButton: P9SRoundButton!
+    @IBOutlet weak var randomButton: P9SRoundButton!
+    @IBOutlet weak var randomLabel: UILabel!
     
     var timer:Timer? = nil
     var countDown = P9SGlobals.maxtime
@@ -50,7 +52,6 @@ class P9STimerController: UIViewController {
 
     }
 
-
     @IBAction func timeTouched(_ sender: UITapGestureRecognizer) {
         
         UIApplication.shared.isIdleTimerDisabled = true
@@ -58,6 +59,8 @@ class P9STimerController: UIViewController {
         self.resetButton.isHidden = false
         self.settingsButton.isHidden = true
         self.logButton.isHidden = true
+        self.randomButton.isHidden = true
+        self.randomLabel.isHidden = true
         self.timeLabel.alpha = 0.5
         UIView.animate(withDuration: 0.5, animations:{
             self.timeLabel.alpha = 1.0
@@ -101,7 +104,7 @@ class P9STimerController: UIViewController {
             self.paused = false
             self.progressSlider.isHidden = true;
             self.addDetailButton.isHidden = false;
-            P9SGlobals.log.append(P9SlogEntry(date:Date(), exersize:"", note:""))
+            P9SGlobals.log.append(P9SlogEntry(date:Date(), exersises:"", note:""))
             return
         }
         if self.paused {
@@ -121,6 +124,18 @@ class P9STimerController: UIViewController {
     
     }
      
+    @IBAction func randomButtonTouched(_ sender: P9SRoundButton) {
+        //rigmarole to stop repeats.
+        var newText = P9SGlobals.exersises[Int(arc4random_uniform(UInt32(P9SGlobals.exersises.count)))]
+        var maxCounter = 0
+        while newText == self.randomLabel.text && maxCounter < 10 {
+            newText = P9SGlobals.exersises[Int(arc4random_uniform(UInt32(P9SGlobals.exersises.count)))]
+            maxCounter += 1
+        }
+        self.randomLabel.text = newText
+        self.randomLabel.isHidden = false
+    }
+    
     @IBAction func progressSliderValueChanged(_ sender: UISlider) {
         self.countDown = self.maxTime - Int(sender.value)
         self.timeLabel.text = "\(self.countDown)"
@@ -149,6 +164,7 @@ class P9STimerController: UIViewController {
         self.progressSlider.isHidden = false
         self.settingsButton.isHidden = false
         self.logButton.isHidden = false
+        self.randomButton.isHidden = false
         self.addDetailButton.isHidden = true
         self.progressSlider.isUserInteractionEnabled = false
         self.progressSlider.thumbTintColor = UIColor.lightGray

@@ -10,7 +10,6 @@ import UIKit
 
 class P9SRoundButton: UIButton {
     
-
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.layer.cornerRadius = self.frame.size.width/2

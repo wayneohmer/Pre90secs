@@ -11,14 +11,26 @@ import UIKit
 class P9SLogController: UITableViewController {
 
     var tableData = [[P9SlogEntry]]()
+    var flatIndexs = [IndexPath]()
+    
+    @IBOutlet weak var addButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 50
         self.tableView.tableFooterView = UIView()
+        self.navigationItem.rightBarButtonItems = [self.addButton,self.editButtonItem]
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.makeTableData()
+     }
+    
+    func makeTableData() {
+        
         P9SGlobals.log.sort(by: { (logEntry1,logEntry2) in
             return logEntry1.date > logEntry2.date
         })
@@ -39,6 +51,12 @@ class P9SLogController: UITableViewController {
             previousEntry = logEntry
         }
         self.tableData.append(dayArray)
+        self.flatIndexs.removeAll()
+        for (section, _) in self.tableData.enumerated()  {
+            for (row, _) in self.tableData[section].enumerated() {
+                self.flatIndexs.append(IndexPath(row: row, section: section))
+            }
+        }
         self.tableView.reloadData()
     }
 
@@ -74,11 +92,11 @@ class P9SLogController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "LogEntry", for: indexPath) as!  P9SLogCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "LogEntry", for: indexPath) as! P9SLogCell
         let logEntry = self.tableData[indexPath.section][indexPath.row]
         
-        cell.timeLabel?.text = "\(logEntry.date.formattedTime()) -"
-        cell.exercizesLabel?.text = "\(logEntry.exersize)"
+        cell.timeLabel?.text = "\(logEntry.date.formattedTime()) "
+        cell.exercizesLabel?.text = "\(logEntry.exersises) "
         if logEntry.note != "" {
             cell.accessoryType = .detailDisclosureButton
         }
@@ -102,8 +120,8 @@ class P9SLogController: UITableViewController {
        // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
-            
+            P9SGlobals.log.remove(at: self.flatIndexs.index(of: indexPath)!)
+            self.makeTableData()
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
@@ -133,6 +151,15 @@ class P9SLogController: UITableViewController {
         if segue.identifier == "ManualAdd" {
             if let vc = segue.destination as? P9SLogEntryController {
                 vc.isManualEntry = true
+            }
+        } else if segue.identifier == "Edit" {
+            if let vc = segue.destination as? P9SLogEntryController {
+                vc.isEdit = true
+                if let sourceCell = sender as? P9SLogCell {
+                    if let indexPath = self.tableView.indexPath(for: sourceCell) {
+                        vc.editIndex = self.flatIndexs.index(of: indexPath )!
+                    }
+                }
             }
         }
     }

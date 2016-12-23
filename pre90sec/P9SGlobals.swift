@@ -14,15 +14,15 @@ class P9SGlobals: NSObject {
     static var spokenTimes:Set<Int> = []
     static var finishedWords = "done"
     static var log = [P9SlogEntry]()
-    static var exersizes = ["Pushups","Wall Sit","Squat Thrusts","Band circles","Air Squats"]
+    static var exersises = ["pushups","wall sit","squat thrusts","band circles","air squats","plank"]
 
     static func readDefaults() {
         let defaults = UserDefaults.standard
         if let spokenTimesArray = defaults.object(forKey:"spokenTimes") as? [Int]{
             P9SGlobals.spokenTimes = Set(spokenTimesArray)
         }
-        if let exersizes = defaults.object(forKey:"exersizes") as? [String]{
-            P9SGlobals.exersizes = exersizes
+        if let exersises = defaults.object(forKey:"exersises") as? [String]{
+            P9SGlobals.exersises = exersises
         }
         if defaults.integer(forKey: "maxtime") != 0 {
             P9SGlobals.maxtime = defaults.integer(forKey: "maxtime")
@@ -35,7 +35,7 @@ class P9SGlobals: NSObject {
                 if let logNotes = defaults.object(forKey:"logNotes") as? [String] {
                     P9SGlobals.log.removeAll()
                     for (idx,logDate) in logDates.enumerated() {
-                        P9SGlobals.log.append(P9SlogEntry(date: logDate, exersize: logExercizes[idx], note: logNotes[idx]))
+                        P9SGlobals.log.append(P9SlogEntry(date: logDate, exersises: logExercizes[idx], note: logNotes[idx]))
                     }
                 }
             }
@@ -52,13 +52,13 @@ class P9SGlobals: NSObject {
         var logNotes = [String]()
         for logEntry in P9SGlobals.log {
             logDates.append(logEntry.date)
-            logExercizes.append(logEntry.exersize)
+            logExercizes.append(logEntry.exersises)
             logNotes.append(logEntry.note)
         }
         defaults.set(logDates, forKey:"logDates")
         defaults.set(logExercizes, forKey:"logExercizes")
         defaults.set(logNotes, forKey:"logNotes")
-        defaults.set(P9SGlobals.exersizes, forKey:"exersizes")
+        defaults.set(P9SGlobals.exersises, forKey:"exersises")
     }
     
 }
@@ -74,6 +74,10 @@ extension Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "hh:mm a"
         return dateFormatter.string(from: self)
+    }
+    
+    func formatedDateTime() -> String {
+        return "\(self.formattedDate()) \(self.formattedTime())"
     }
 
 }
