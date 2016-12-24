@@ -21,7 +21,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         do {
             try FileManager.default.createDirectory(atPath: "\(documentDirectory)/inspirationalImages", withIntermediateDirectories: true, attributes: nil)
         } catch let error as NSError {
-            print("could not create photo direcory \(error.description)")
+            print("could not create inspirationalImages direcory \(error.description)")
+        }
+        do {
+            try FileManager.default.createDirectory(atPath: "\(documentDirectory)/progressImages", withIntermediateDirectories: true, attributes: nil)
+        } catch let error as NSError {
+            print("could not create progressImages direcory \(error.description)")
         }
         var imageData = UIImagePNGRepresentation(UIImage(named: "Josh1.png")!)
         do {

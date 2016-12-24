@@ -13,7 +13,7 @@ private let reuseIdentifier = "ImageViewer"
 class P9SImageViewerController: UICollectionViewController {
 
     
-    var images = [UIImage]()
+    var partentController:P9SImageController!
     var selectedPhotoIndex:IndexPath?
     var cellHidden = true
 
@@ -43,6 +43,17 @@ class P9SImageViewerController: UICollectionViewController {
         
         let alertController = UIAlertController(title: "You Sure?", message: "", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { alertAction in
+            if let cell = self.collectionView?.visibleCells[0] as? P9SImageViewerCell {
+                if let indexPath = self.collectionView?.indexPath(for: cell) {
+                    self.partentController.images.remove(at: indexPath.row)
+                    self.collectionView?.reloadData()
+                    do {
+                        try FileManager.default.removeItem(at: self.partentController.images[indexPath.row].url)
+                    } catch {
+                        print("remove file failed")
+                    }
+                }
+            }
         }))
         
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
@@ -68,13 +79,13 @@ class P9SImageViewerController: UICollectionViewController {
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.images.count
+        return self.partentController.images.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! P9SImageViewerCell
     
-        cell.setUpCell(tempPhoto: self.images[indexPath.item])
+        cell.setUpCell(tempPhoto: self.partentController.images[indexPath.item].image)
         cell.parentViewController = self
         cell.isHidden = cellHidden
         return cell

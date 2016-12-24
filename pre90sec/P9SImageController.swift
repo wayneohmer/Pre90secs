@@ -12,8 +12,15 @@ private let reuseIdentifier = "ImageCell"
 
 class P9SImageController: UICollectionViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    var images = [UIImage]()
+    struct ImageStruct {
+        var image:UIImage
+        var url:URL
+    }
+    
+    var images = [ImageStruct]()
     var selectedIndex = IndexPath()
+    let imageDirectory = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/inspirationalImages"
+
     
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
@@ -21,12 +28,14 @@ class P9SImageController: UICollectionViewController, UIImagePickerControllerDel
         super.viewDidLoad()
         
         do {
-            let imageDirectory = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/inspirationalImages"
             let imageFiles = try FileManager.default.contentsOfDirectory(atPath: imageDirectory)
             for imagefile in imageFiles {
                 do {
-                    let thisImage = try Data.init(contentsOf: URL(fileURLWithPath:"\(imageDirectory)/\(imagefile)"))
-                    images.append(UIImage(data: thisImage)!)
+                    let thisUrl = URL(fileURLWithPath:"\(imageDirectory)/\(imagefile)")
+                    let thisImageData = try Data.init(contentsOf: thisUrl)
+                    if let thisImage = UIImage(data:thisImageData) {
+                        images.append(ImageStruct(image: thisImage , url: thisUrl))
+                    }
                     
                 } catch {
                     print("\(imagefile)")
@@ -40,6 +49,11 @@ class P9SImageController: UICollectionViewController, UIImagePickerControllerDel
         let cellWidth = CGFloat(screenWidth/3)
         self.flowLayout.itemSize = CGSize(width:cellWidth, height:cellWidth)
         self.collectionView?.setCollectionViewLayout(flowLayout, animated: true)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.collectionView?.reloadData()
     }
 
     @IBAction func plusTouched(_ sender: UIBarButtonItem) {
@@ -75,8 +89,16 @@ class P9SImageController: UICollectionViewController, UIImagePickerControllerDel
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            self.images.append(pickedImage)
-            self.collectionView?.reloadData()
+            let fileUrl = URL(fileURLWithPath: "\(imageDirectory)/\(Date().timeIntervalSince1970)")
+            let pickImageData = UIImageJPEGRepresentation(pickedImage, 1)
+            do {
+                try pickImageData?.write(to: fileUrl)
+                self.images.append(ImageStruct(image: pickedImage, url:fileUrl))
+                self.collectionView?.reloadData()
+
+            } catch {
+                print("could not save image")
+            }
         }
         picker.dismiss(animated: true, completion: nil)
     }
@@ -96,7 +118,7 @@ class P9SImageController: UICollectionViewController, UIImagePickerControllerDel
         if segue.identifier == "PhotoTouched" {
             let vc = segue.destination as! P9SImageViewerController
             vc.selectedPhotoIndex = self.selectedIndex
-            vc.images = self.images
+            vc.partentController = self
             
         }
     }
@@ -116,7 +138,7 @@ class P9SImageController: UICollectionViewController, UIImagePickerControllerDel
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! P9SImageCell
     
-        cell.imageView.image = self.images[indexPath.item];
+        cell.imageView.image = self.images[indexPath.item].image;
     
         return cell
     }

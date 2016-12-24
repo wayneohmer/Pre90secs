@@ -115,13 +115,10 @@
 				CD917E331E030C87009F2138 /* Main.storyboard */,
 				CD917E2F1E030C87009F2138 /* AppDelegate.swift */,
 				CD917E311E030C87009F2138 /* P9STimerController.swift */,
-				CD5F81C11E089BDA009AB07C /* P9SFinishedWordsController.swift */,
-				CDD993031E09AB1800820AE5 /* P9SMaxTimeController.swift */,
-				CDF2BF381E0C87C300885F3E /* P9SEditExersisesController.swift */,
-				CDD9930D1E0B0DD200820AE5 /* Log */,
-				CD0B81851E088B13003D5F7F /* Speak Times */,
-				CD19E3A31E0616C200DDBECA /* Image Views */,
 				CD0B81861E088C42003D5F7F /* P9SGlobals.swift */,
+				CD9FD4EC1E0DE60D0012BE49 /* Settings */,
+				CDD9930D1E0B0DD200820AE5 /* Log */,
+				CD19E3A31E0616C200DDBECA /* Image Views */,
 				CDD993101E0C49DB00820AE5 /* Custom controls */,
 				CD917E361E030C87009F2138 /* Assets.xcassets */,
 				CD917E471E032D20009F2138 /* images */,
@@ -139,6 +136,17 @@
 				CD917E441E032D19009F2138 /* Josh2.png */,
 			);
 			name = images;
+			sourceTree = "<group>";
+		};
+		CD9FD4EC1E0DE60D0012BE49 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				CD5F81C11E089BDA009AB07C /* P9SFinishedWordsController.swift */,
+				CDD993031E09AB1800820AE5 /* P9SMaxTimeController.swift */,
+				CDF2BF381E0C87C300885F3E /* P9SEditExersisesController.swift */,
+				CD0B81851E088B13003D5F7F /* Speak Times */,
+			);
+			name = Settings;
 			sourceTree = "<group>";
 		};
 		CDD9930D1E0B0DD200820AE5 /* Log */ = {
