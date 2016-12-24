@@ -32,7 +32,7 @@ class P9SLogEntryController: UITableViewController {
         
         if isManualEntry {
             self.dateTextView.isUserInteractionEnabled = true
-            self.dateTextView.becomeFirstResponder()
+            _ = self.dateTextView.becomeFirstResponder()
         } else if isEdit {
             self.thisEntry = P9SGlobals.log[self.editIndex]
             self.dateTextView.isUserInteractionEnabled = true

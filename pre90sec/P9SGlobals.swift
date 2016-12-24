@@ -15,6 +15,7 @@ class P9SGlobals: NSObject {
     static var finishedWords = "done"
     static var log = [P9SlogEntry]()
     static var exersises = ["pushups","wall sit","squat thrusts","band circles","air squats","plank"]
+    static var progressImageDates = [String:Date]()
 
     static func readDefaults() {
         let defaults = UserDefaults.standard
@@ -23,6 +24,9 @@ class P9SGlobals: NSObject {
         }
         if let exersises = defaults.object(forKey:"exersises") as? [String]{
             P9SGlobals.exersises = exersises
+        }
+        if let progressImageDates = defaults.object(forKey:"progressImageDates") as? [String:Date] {
+            P9SGlobals.progressImageDates = progressImageDates
         }
         if defaults.integer(forKey: "maxtime") != 0 {
             P9SGlobals.maxtime = defaults.integer(forKey: "maxtime")
@@ -59,6 +63,7 @@ class P9SGlobals: NSObject {
         defaults.set(logExercizes, forKey:"logExercizes")
         defaults.set(logNotes, forKey:"logNotes")
         defaults.set(P9SGlobals.exersises, forKey:"exersises")
+        defaults.set(P9SGlobals.progressImageDates, forKey:"progressImageDates")
     }
     
 }
@@ -68,6 +73,13 @@ extension Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMMM dd yyyy"
         return dateFormatter.string(from: self)
+    }
+    
+    func shortFormatted() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+        return dateFormatter.string(from: self)
+
     }
     
     func formattedTime() -> String {

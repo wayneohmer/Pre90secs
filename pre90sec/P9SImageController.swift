@@ -7,8 +7,8 @@
 //
 
 import UIKit
+import Photos
 
-private let reuseIdentifier = "ImageCell"
 
 class P9SImageController: UICollectionViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -19,14 +19,15 @@ class P9SImageController: UICollectionViewController, UIImagePickerControllerDel
     
     var images = [ImageStruct]()
     var selectedIndex = IndexPath()
-    let imageDirectory = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/inspirationalImages"
+    var imageDirectory = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])"
+    var isProgressImages = false
 
     
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.imageDirectory = self.isProgressImages ? "\(self.imageDirectory)/progressImages" : "\(self.imageDirectory)/inspirationalImages"
         do {
             let imageFiles = try FileManager.default.contentsOfDirectory(atPath: imageDirectory)
             for imagefile in imageFiles {
@@ -34,7 +35,7 @@ class P9SImageController: UICollectionViewController, UIImagePickerControllerDel
                     let thisUrl = URL(fileURLWithPath:"\(imageDirectory)/\(imagefile)")
                     let thisImageData = try Data.init(contentsOf: thisUrl)
                     if let thisImage = UIImage(data:thisImageData) {
-                        images.append(ImageStruct(image: thisImage , url: thisUrl))
+                        images.append(ImageStruct(image: thisImage, url: thisUrl))
                     }
                     
                 } catch {
@@ -47,7 +48,8 @@ class P9SImageController: UICollectionViewController, UIImagePickerControllerDel
         }
         let screenWidth = self.view.bounds.width - CGFloat((4)*2)
         let cellWidth = CGFloat(screenWidth/3)
-        self.flowLayout.itemSize = CGSize(width:cellWidth, height:cellWidth)
+        
+        self.flowLayout.itemSize = self.isProgressImages ? CGSize(width:cellWidth, height:cellWidth+40) : CGSize(width:cellWidth, height:cellWidth)
         self.collectionView?.setCollectionViewLayout(flowLayout, animated: true)
     }
     
@@ -89,20 +91,31 @@ class P9SImageController: UICollectionViewController, UIImagePickerControllerDel
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            let fileUrl = URL(fileURLWithPath: "\(imageDirectory)/\(Date().timeIntervalSince1970)")
+            let fileUrl = URL(fileURLWithPath: "\(imageDirectory)/\(Int(Date().timeIntervalSince1970*100))")
             let pickImageData = UIImageJPEGRepresentation(pickedImage, 1)
             do {
                 try pickImageData?.write(to: fileUrl)
                 self.images.append(ImageStruct(image: pickedImage, url:fileUrl))
+                if isProgressImages {
+                    P9SGlobals.progressImageDates[fileUrl.lastPathComponent] = Date()
+                }
                 self.collectionView?.reloadData()
 
             } catch {
                 print("could not save image")
             }
+            if let assetURL = info[UIImagePickerControllerReferenceURL] as? URL {
+                let assets = PHAsset.fetchAssets(withALAssetURLs: [assetURL], options :nil)
+                assets.enumerateObjects({ (asset, index, done) in
+                    if let takeTaken = asset.creationDate {
+                        P9SGlobals.progressImageDates[fileUrl.lastPathComponent] = takeTaken
+                    }
+                })
+            }
         }
+        
         picker.dismiss(animated: true, completion: nil)
     }
-
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -112,7 +125,6 @@ class P9SImageController: UICollectionViewController, UIImagePickerControllerDel
     
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "PhotoTouched" {
@@ -122,7 +134,6 @@ class P9SImageController: UICollectionViewController, UIImagePickerControllerDel
             
         }
     }
-    
 
     // MARK: UICollectionViewDataSource
 
@@ -130,52 +141,30 @@ class P9SImageController: UICollectionViewController, UIImagePickerControllerDel
         return 1
     }
 
-
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return images.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! P9SImageCell
-    
-        cell.imageView.image = self.images[indexPath.item].image;
-    
-        return cell
+        if isProgressImages {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Progress", for: indexPath) as! P9SProgressImageCell
+            cell.imageView.image = self.images[indexPath.item].image;
+            cell.fileName = self.images[indexPath.item].url.lastPathComponent
+            cell.dateField.text = P9SGlobals.progressImageDates[cell.fileName]?.shortFormatted()
+            return cell
+
+        } else  {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Inspiration", for: indexPath) as! P9SImageCell
+            
+            cell.imageView.image = self.images[indexPath.item].image;
+            return cell
+
+        }
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.selectedIndex = indexPath
         self.performSegue(withIdentifier: "PhotoTouched", sender: nil)
     }
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
 
 }

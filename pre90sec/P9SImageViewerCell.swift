@@ -37,8 +37,8 @@ class P9SImageViewerCell: UICollectionViewCell, UIScrollViewDelegate {
         singleTapRecognizer.numberOfTapsRequired = 1
         singleTapRecognizer.require(toFail: doubleTapRecognizer)
         self.scrollView.addGestureRecognizer(singleTapRecognizer)
-        
     }
+
     func handleSingleTap()
     {
         self.parentViewController.navigationController?.navigationBar.isHidden = !(self.parentViewController.navigationController?.navigationBar.isHidden)!

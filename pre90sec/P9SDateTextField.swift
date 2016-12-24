@@ -11,6 +11,7 @@ import UIKit
 class P9SDateTextField: UITextField {
 
     let datePicker = UIDatePicker()
+    var isShort = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,7 +39,6 @@ class P9SDateTextField: UITextField {
         toolBar.items = [navItem]
         self.inputAccessoryView = toolBar
         
-        self.datePicker.datePickerMode = .dateAndTime
         self.datePicker.addTarget(self, action: #selector(self.dateUpdated), for: .valueChanged)
         self.datePicker.maximumDate = Date()
         self.inputView = self.datePicker
@@ -46,8 +46,13 @@ class P9SDateTextField: UITextField {
         
     }
     
+    override func becomeFirstResponder() -> Bool {
+        self.datePicker.datePickerMode = self.isShort ? .date : .dateAndTime
+        return super.becomeFirstResponder()
+    }
+    
     func dateUpdated(datePicker:UIDatePicker) {
-        self.text = datePicker.date.formatedDateTime()
+        self.text = self.isShort ? datePicker.date.shortFormatted() : datePicker.date.formatedDateTime()
     }
     
     func doneButtonTouched() {

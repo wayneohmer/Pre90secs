@@ -24,6 +24,8 @@
 		CD917E421E031AE8009F2138 /* Josh1.png in Resources */ = {isa = PBXBuildFile; fileRef = CD917E411E031AE8009F2138 /* Josh1.png */; };
 		CD917E451E032D19009F2138 /* Josh3.png in Resources */ = {isa = PBXBuildFile; fileRef = CD917E431E032D19009F2138 /* Josh3.png */; };
 		CD917E461E032D19009F2138 /* Josh2.png in Resources */ = {isa = PBXBuildFile; fileRef = CD917E441E032D19009F2138 /* Josh2.png */; };
+		CD9FD4EE1E0F0DA90012BE49 /* P9SProgressImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9FD4ED1E0F0DA90012BE49 /* P9SProgressImageCell.swift */; };
+		CD9FD4F01E0F11750012BE49 /* P9SSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9FD4EF1E0F11750012BE49 /* P9SSettingsController.swift */; };
 		CDD993041E09AB1800820AE5 /* P9SMaxTimeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD993031E09AB1800820AE5 /* P9SMaxTimeController.swift */; };
 		CDD993061E09B44500820AE5 /* P9SlogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD993051E09B44500820AE5 /* P9SlogEntry.swift */; };
 		CDD993081E09B5A400820AE5 /* P9SLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD993071E09B5A400820AE5 /* P9SLogController.swift */; };
@@ -53,6 +55,8 @@
 		CD917E411E031AE8009F2138 /* Josh1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Josh1.png; sourceTree = "<group>"; };
 		CD917E431E032D19009F2138 /* Josh3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Josh3.png; sourceTree = "<group>"; };
 		CD917E441E032D19009F2138 /* Josh2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Josh2.png; sourceTree = "<group>"; };
+		CD9FD4ED1E0F0DA90012BE49 /* P9SProgressImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = P9SProgressImageCell.swift; sourceTree = "<group>"; };
+		CD9FD4EF1E0F11750012BE49 /* P9SSettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = P9SSettingsController.swift; sourceTree = "<group>"; };
 		CDD993031E09AB1800820AE5 /* P9SMaxTimeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = P9SMaxTimeController.swift; sourceTree = "<group>"; };
 		CDD993051E09B44500820AE5 /* P9SlogEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = P9SlogEntry.swift; sourceTree = "<group>"; };
 		CDD993071E09B5A400820AE5 /* P9SLogController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = P9SLogController.swift; sourceTree = "<group>"; };
@@ -87,6 +91,7 @@
 			children = (
 				CD19E39F1E0612E200DDBECA /* P9SImageController.swift */,
 				CD19E3A11E0616B900DDBECA /* P9SImageCell.swift */,
+				CD9FD4ED1E0F0DA90012BE49 /* P9SProgressImageCell.swift */,
 				CD19E3A61E071DB100DDBECA /* P9SImageViewerCell.swift */,
 				CD19E3A81E071DE200DDBECA /* P9SImageViewerController.swift */,
 			);
@@ -141,6 +146,7 @@
 		CD9FD4EC1E0DE60D0012BE49 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				CD9FD4EF1E0F11750012BE49 /* P9SSettingsController.swift */,
 				CD5F81C11E089BDA009AB07C /* P9SFinishedWordsController.swift */,
 				CDD993031E09AB1800820AE5 /* P9SMaxTimeController.swift */,
 				CDF2BF381E0C87C300885F3E /* P9SEditExersisesController.swift */,
@@ -246,8 +252,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD9FD4EE1E0F0DA90012BE49 /* P9SProgressImageCell.swift in Sources */,
 				CD19E3A91E071DE200DDBECA /* P9SImageViewerController.swift in Sources */,
 				CD19E3A71E071DB100DDBECA /* P9SImageViewerCell.swift in Sources */,
+				CD9FD4F01E0F11750012BE49 /* P9SSettingsController.swift in Sources */,
 				CDD993041E09AB1800820AE5 /* P9SMaxTimeController.swift in Sources */,
 				CD19E3A21E0616B900DDBECA /* P9SImageCell.swift in Sources */,
 				CD19E3A01E0612E200DDBECA /* P9SImageController.swift in Sources */,
