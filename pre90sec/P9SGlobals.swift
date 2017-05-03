@@ -71,7 +71,7 @@ class P9SGlobals: NSObject {
 extension Date {
     func formattedDate() -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMMM dd yyyy"
+        dateFormatter.dateFormat = "EEEE MMM dd yyyy"
         return dateFormatter.string(from: self)
     }
     

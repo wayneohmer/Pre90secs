@@ -22,6 +22,7 @@ class P9SEditExersisesController: UITableViewController, UITextFieldDelegate {
         self.addButton.layer.borderColor = self.addButton.currentTitleColor.cgColor
         self.addButton.layer.cornerRadius = 10
         self.addButton.layer.borderWidth = 2
+        self.tableView.allowsSelectionDuringEditing = true
     }
 
     @IBAction func addButtonTouched(_ sender: UIButton) {
@@ -42,7 +43,6 @@ class P9SEditExersisesController: UITableViewController, UITextFieldDelegate {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source
@@ -55,7 +55,6 @@ class P9SEditExersisesController: UITableViewController, UITextFieldDelegate {
         return P9SGlobals.exersises.count
     }
 
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Exersise", for: indexPath)
 
@@ -66,15 +65,25 @@ class P9SEditExersisesController: UITableViewController, UITextFieldDelegate {
         return cell
     }
     
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let alertView = UIAlertController(title: "Edit Exersise", message: "", preferredStyle: .alert)
+        alertView.addTextField(configurationHandler: { (textfield) in
+                textfield.text = P9SGlobals.exersises[indexPath.item]
+            })
+        alertView.addAction(UIAlertAction(title: "Save", style: .default, handler: { [weak alertView] _ in
+            if let exersiseText = alertView?.textFields?[0].text {
+                if exersiseText != "" {
+                    P9SGlobals.exersises[indexPath.item] = exersiseText
+                    self.tableView.reloadData()
+                }
+            }
+        }))
+        alertView.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
+        
+        self.present(alertView, animated: true, completion: nil)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
-    */
-
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
@@ -82,30 +91,5 @@ class P9SEditExersisesController: UITableViewController, UITextFieldDelegate {
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+ 
 }

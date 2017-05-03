@@ -18,7 +18,8 @@ class P9SLogController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 50
+        self.tableView.estimatedRowHeight = 30
+        self.tableView.sectionHeaderHeight = 40
         self.tableView.tableFooterView = UIView()
         self.navigationItem.rightBarButtonItems = [self.addButton,self.editButtonItem]
 
@@ -78,8 +79,8 @@ class P9SLogController: UITableViewController {
         if let headerView = view as? UITableViewHeaderFooterView {
             headerView.textLabel?.textAlignment = .center
             headerView.textLabel?.textColor = UIColor.white
+            headerView.textLabel?.font = UIFont.boldSystemFont(ofSize: 20)
             headerView.contentView.backgroundColor = UIColor.darkGray
-
         }
     }
     
@@ -98,7 +99,7 @@ class P9SLogController: UITableViewController {
         cell.timeLabel?.text = "\(logEntry.date.formattedTime()) "
         cell.exercizesLabel?.text = "\(logEntry.exersises) "
         if logEntry.note != "" {
-            cell.accessoryType = .detailDisclosureButton
+            cell.accessoryType = .detailButton
         }
         return cell
     }
@@ -109,14 +110,6 @@ class P9SLogController: UITableViewController {
         self.present(alertView, animated: true, completion: nil)
     }
     
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
        // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
@@ -126,27 +119,9 @@ class P9SLogController: UITableViewController {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    
 
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ManualAdd" {
             if let vc = segue.destination as? P9SLogEntryController {

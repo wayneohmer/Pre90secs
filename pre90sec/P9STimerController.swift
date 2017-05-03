@@ -25,7 +25,8 @@ class P9STimerController: UIViewController {
     @IBOutlet weak var addDetailButton: P9SRoundButton!
     @IBOutlet weak var randomButton: P9SRoundButton!
     @IBOutlet weak var randomLabel: UILabel!
-    
+    @IBOutlet weak var soundAlertButton: UIBarButtonItem!
+
     var timer:Timer? = nil
     var countDown = P9SGlobals.maxtime
     var pausedTime = Int(0)
@@ -43,15 +44,52 @@ class P9STimerController: UIViewController {
         self.timeLabel.text = "\(self.countDown)"
         self.images = [UIImage(named:"Josh1")!,UIImage(named:"Josh2")!,UIImage(named:"Josh3")!]
         self.fixInstructions()
+        //trigger volume control.  
+        self.listenVolumeButton()
+        speechSynthesizer.speak(AVSpeechUtterance(string:" "))
         
     }
+
     override func viewWillAppear(_ animated: Bool) {
         self.maxTime = P9SGlobals.maxtime
         self.timeLabel.text = "\(self.maxTime)"
         self.progressSlider.maximumValue = Float(self.maxTime)
-
+        self.checkVolume()
     }
-
+    
+    func checkVolume() {
+        if AVAudioSession.sharedInstance().outputVolume < 0.25 {
+            self.soundAlertButton.isEnabled = true
+        } else {
+            self.soundAlertButton.isEnabled = false
+        }
+    }
+    
+    func listenVolumeButton(){
+        
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setActive(true)
+            audioSession.addObserver(self, forKeyPath: "outputVolume", options: .new, context: nil)
+        } catch {
+            print("audio session Failed")
+        }
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "outputVolume"{
+            self.checkVolume()
+        }
+    }
+    
+    @IBAction func soundAlertTouched(_ sender: UIBarButtonItem) {
+        let alertView = UIAlertController(title: "Sound Volume Low", message: "", preferredStyle: .alert)
+        alertView.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            self.soundAlertButton.isEnabled = false
+        }))
+        self.present(alertView, animated: true, completion: nil)
+    }
+    
     @IBAction func timeTouched(_ sender: UITapGestureRecognizer) {
         
         UIApplication.shared.isIdleTimerDisabled = true

@@ -24,7 +24,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="90" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fv7-UO-p6L">
-                                <rect key="frame" x="58" y="46" width="259.5" height="239"/>
+                                <rect key="frame" x="58" y="38" width="259.5" height="239"/>
                                 <gestureRecognizers/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="200"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -34,13 +34,13 @@
                                 </connections>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q4q-UJ-ISc">
-                                <rect key="frame" x="175" y="325" width="25" height="48"/>
+                                <rect key="frame" x="175" y="305.5" width="25" height="48"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paused" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BqS-w3-30O">
-                                <rect key="frame" x="159.5" y="296.5" width="56.5" height="20.5"/>
+                                <rect key="frame" x="159.5" y="277" width="56.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -77,7 +77,7 @@
                                 </connections>
                             </button>
                             <slider opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="4S1-Mn-TJ3">
-                                <rect key="frame" x="14" y="381" width="347" height="31"/>
+                                <rect key="frame" x="14" y="358.5" width="347" height="31"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="thumbTintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -158,7 +158,7 @@
                             <constraint firstItem="pX7-He-oyS" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Cag-dz-ch2"/>
                             <constraint firstItem="baJ-SZ-1il" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Djc-lA-T0E"/>
                             <constraint firstItem="gLR-Ax-RIp" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="HB3-So-KgF"/>
-                            <constraint firstItem="4S1-Mn-TJ3" firstAttribute="top" secondItem="q4q-UJ-ISc" secondAttribute="bottom" constant="8" id="JFz-wT-gbp"/>
+                            <constraint firstItem="4S1-Mn-TJ3" firstAttribute="top" secondItem="q4q-UJ-ISc" secondAttribute="bottom" constant="5" id="JFz-wT-gbp"/>
                             <constraint firstItem="baJ-SZ-1il" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="Lnq-tQ-PXF"/>
                             <constraint firstItem="Fv7-UO-p6L" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="OlB-eH-lII"/>
                             <constraint firstItem="9bv-k9-OT3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Ps4-C2-giu"/>
@@ -167,18 +167,24 @@
                             <constraint firstItem="9bv-k9-OT3" firstAttribute="top" secondItem="baJ-SZ-1il" secondAttribute="top" id="RZj-eJ-Wmy"/>
                             <constraint firstItem="gBz-yv-QBI" firstAttribute="top" secondItem="Mku-QJ-8s9" secondAttribute="bottom" constant="20" id="Sm2-R7-l7e"/>
                             <constraint firstItem="gLR-Ax-RIp" firstAttribute="height" secondItem="5ue-nb-Quk" secondAttribute="height" id="Uek-Ab-sRG"/>
-                            <constraint firstItem="Fv7-UO-p6L" firstAttribute="top" secondItem="baJ-SZ-1il" secondAttribute="bottom" constant="8" id="XHP-0S-ibq"/>
+                            <constraint firstItem="Fv7-UO-p6L" firstAttribute="top" secondItem="baJ-SZ-1il" secondAttribute="bottom" id="XHP-0S-ibq"/>
                             <constraint firstItem="q4q-UJ-ISc" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ZVs-O5-DMQ"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4S1-Mn-TJ3" secondAttribute="trailing" id="oLr-es-IHO"/>
                             <constraint firstItem="gLR-Ax-RIp" firstAttribute="top" secondItem="pX7-He-oyS" secondAttribute="bottom" constant="18" id="rJX-kD-wmS"/>
                             <constraint firstItem="Mku-QJ-8s9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="rKs-t7-Lwj"/>
-                            <constraint firstItem="BqS-w3-30O" firstAttribute="top" secondItem="Fv7-UO-p6L" secondAttribute="bottom" constant="11.5" id="vKL-rZ-3Jg"/>
+                            <constraint firstItem="BqS-w3-30O" firstAttribute="top" secondItem="Fv7-UO-p6L" secondAttribute="bottom" id="vKL-rZ-3Jg"/>
                             <constraint firstItem="TvD-ue-nBc" firstAttribute="bottom" secondItem="gBz-yv-QBI" secondAttribute="bottom" id="xKL-94-cGo"/>
                             <constraint firstItem="gBz-yv-QBI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="xzY-OD-fAP"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Pre90Secs" id="Cqa-OC-uiI">
                         <barButtonItem key="backBarButtonItem" title="Back" id="WfJ-RU-v83"/>
+                        <barButtonItem key="leftBarButtonItem" title="!!!" id="hRJ-es-NlN">
+                            <color key="tintColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="soundAlertTouched:" destination="BYZ-38-t0r" id="7fb-Bb-tba"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="667"/>
@@ -194,6 +200,7 @@
                         <outlet property="randomLabel" destination="pX7-He-oyS" id="KdH-Fb-JZx"/>
                         <outlet property="resetButton" destination="gBz-yv-QBI" id="coT-K3-oz1"/>
                         <outlet property="settingsButton" destination="TvD-ue-nBc" id="XD9-ty-I1M"/>
+                        <outlet property="soundAlertButton" destination="hRJ-es-NlN" id="hCQ-EU-jxd"/>
                         <outlet property="timeLabel" destination="Fv7-UO-p6L" id="dhG-1B-Z6d"/>
                     </connections>
                 </viewController>
@@ -597,7 +604,7 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="newexersisetouched:" destination="GZ2-a8-0jW" eventType="touchUpInside" id="kcg-Yg-sL9"/>
+                                <action selector="newexersiseTouched:" destination="GZ2-a8-0jW" eventType="touchUpInside" id="cer-LE-pGp"/>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pSV-U8-UBp">
@@ -993,7 +1000,7 @@
         <image name="Josh1.png" width="161" height="199"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="maP-37-N4w"/>
+        <segue reference="UqK-4e-ulD"/>
         <segue reference="dIL-xg-vrW"/>
     </inferredMetricsTieBreakers>
 </document>

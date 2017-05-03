@@ -85,7 +85,7 @@ class P9SLogEntryController: UITableViewController {
         
     }
     
-    @IBAction func newexersisetouched(_ sender: UIButton) {
+    @IBAction func newexersiseTouched(_ sender: UIButton) {
         
         self.dateTextView.resignFirstResponder()
         
