@@ -41,25 +41,7 @@ class P9SImageViewerController: UICollectionViewController {
     
     @IBAction func trashTouched(_ sender: UIBarButtonItem) {
         
-        let alertController = UIAlertController(title: "You Sure?", message: "", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { alertAction in
-            if let cell = self.collectionView?.visibleCells[0] as? P9SImageViewerCell {
-                if let indexPath = self.collectionView?.indexPath(for: cell) {
-                    let removeUrl = self.partentController.images[indexPath.row].url
-                    self.partentController.images.remove(at: indexPath.row)
-                    self.collectionView?.reloadData()
-                    do {
-                        try FileManager.default.removeItem(at: removeUrl)
-                        P9SGlobals.progressImageDates.removeValue(forKey: removeUrl.lastPathComponent)
-                    } catch {
-                        print("remove file failed")
-                    }
-                }
-            }
-        }))
         
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
-        self.present(alertController, animated: true, completion: nil)
     }
 
     // MARK: UICollectionViewDataSource
@@ -67,7 +49,6 @@ class P9SImageViewerController: UICollectionViewController {
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.partentController.images.count

@@ -13,14 +13,16 @@ struct P9SlogEntry  {
     var date = Date()
     var exersises = ""
     var note = ""
-
+    var isGap = false
+    
     init() {
     }
-    
-    init(date:Date, exersises:String, note:String) {
+
+    init(date:Date, exersises:String, note:String, isGap:Bool = false) {
         self.date = date
         self.note = note
         self.exersises = exersises
+        self.isGap = isGap
     }
     
 }

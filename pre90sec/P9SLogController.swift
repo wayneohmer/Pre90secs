@@ -32,9 +32,7 @@ class P9SLogController: UITableViewController {
     
     func makeTableData() {
         
-        P9SGlobals.log.sort(by: { (logEntry1,logEntry2) in
-            return logEntry1.date > logEntry2.date
-        })
+       
         let calendar = Calendar.current
         var dayArray = [P9SlogEntry]()
         var previousEntry = P9SlogEntry()
@@ -44,6 +42,14 @@ class P9SLogController: UITableViewController {
                 let previousDay = calendar.component(.day, from: previousEntry.date)
                 let thisDay = calendar.component(.day, from: logEntry.date)
                 if previousDay != thisDay {
+                    let previousMidnight = calendar.startOfDay(for: previousEntry.date)
+                    let logEntryMidnight = calendar.startOfDay(for: logEntry.date)
+                    let difference = calendar.dateComponents([.day], from: logEntryMidnight, to: previousMidnight)
+                    if let days = difference.day {
+                        if days > 1 {
+                            dayArray.append(P9SlogEntry(date: logEntry.date, exersises: "\(days - 1) Day Gap", note: "", isGap: true))
+                        }
+                    }
                     self.tableData.append(dayArray)
                     dayArray.removeAll()
                 }
@@ -93,15 +99,24 @@ class P9SLogController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "LogEntry", for: indexPath) as! P9SLogCell
+        
         let logEntry = self.tableData[indexPath.section][indexPath.row]
         
-        cell.timeLabel?.text = "\(logEntry.date.formattedTime()) "
-        cell.exercizesLabel?.text = "\(logEntry.exersises) "
-        if logEntry.note != "" {
-            cell.accessoryType = .detailButton
+        if logEntry.isGap {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "LogGap", for: indexPath) as! P9SLogGapCell
+            cell.titleLabel.text = logEntry.exersises
+            return cell
+            
+        } else {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "LogEntry", for: indexPath) as! P9SLogCell
+            
+            cell.exercizesLabel?.text = "\(logEntry.exersises) "
+            cell.timeLabel?.text = "\(logEntry.date.formattedTime()) "
+            cell.accessoryType = logEntry.note != "" ? .detailButton : .none
+       
+            return cell
         }
-        return cell
     }
     
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
@@ -110,6 +125,9 @@ class P9SLogController: UITableViewController {
         self.present(alertView, animated: true, completion: nil)
     }
     
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return !self.tableData[indexPath.section][indexPath.row].isGap
+    }
        // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {

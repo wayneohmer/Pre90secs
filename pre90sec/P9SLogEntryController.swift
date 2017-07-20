@@ -129,8 +129,8 @@ class P9SLogEntryController: UITableViewController {
             P9SGlobals.log[P9SGlobals.log.count-1] = self.thisEntry
             self.performSegue(withIdentifier: "DetailEntryExit", sender: nil)
         }
+        P9SGlobals.sortLog()
     }
-
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

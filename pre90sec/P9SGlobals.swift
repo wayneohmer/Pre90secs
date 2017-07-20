@@ -8,7 +8,7 @@
 
 import UIKit
 
-class P9SGlobals: NSObject {
+class P9SGlobals {
     
     static var maxtime = Int(90)
     static var spokenTimes:Set<Int> = []
@@ -44,6 +44,12 @@ class P9SGlobals: NSObject {
                 }
             }
         }
+    }
+    
+    static func sortLog() {
+        P9SGlobals.log.sort(by: { (logEntry1,logEntry2) in
+            return logEntry1.date > logEntry2.date
+        })
     }
     
     static func writeDefaults() {
