@@ -107,14 +107,15 @@ class P9SLogEntryController: UITableViewController {
         
     }
     
-    @IBAction func saveTuched(_ sender: UIBarButtonItem) {
+    @IBAction func saveTouched(_ sender: UIBarButtonItem) {
         
         var exersises = ""
         for exersise in self.selectedExersises {
             exersises += "\(exersise), "
         }
         if exersises != "" {
-            self.thisEntry.exersises = exersises.substring(to: exersises.index(exersises.endIndex, offsetBy: -2))
+            //self.thisEntry.exersises = exersises.substring(to: exersises.index(exersises.endIndex, offsetBy: -2))
+            self.thisEntry.exersises = String(exersises[..<exersises.index(exersises.endIndex, offsetBy: -2)])
         }
         if self.isManualEntry {
             self.thisEntry.date = self.dateTextView.datePicker.date

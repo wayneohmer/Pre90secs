@@ -104,13 +104,11 @@ class P9SImageController: UICollectionViewController, UIImagePickerControllerDel
             } catch {
                 print("could not save image")
             }
-            if let assetURL = info[UIImagePickerControllerReferenceURL] as? URL {
-                let assets = PHAsset.fetchAssets(withALAssetURLs: [assetURL], options :nil)
-                assets.enumerateObjects({ (asset, index, done) in
-                    if let takeTaken = asset.creationDate {
-                        P9SGlobals.progressImageDates[fileUrl.lastPathComponent] = takeTaken
-                    }
-                })
+            
+            if let asset = info[UIImagePickerControllerPHAsset] as?  PHAsset {
+                if let takeTaken = asset.creationDate {
+                    P9SGlobals.progressImageDates[fileUrl.lastPathComponent] = takeTaken
+                }
             }
         }
         

@@ -30,7 +30,7 @@ class P9SImageViewerCell: UICollectionViewCell, UIScrollViewDelegate {
         // 100 is aribitray. works well.
         self.scrollView.maximumZoomScale = 100.0
         self.scrollView.zoomScale = 1.0
-        let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap))
+        let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.handleDoubleTap))
         doubleTapRecognizer.numberOfTapsRequired = 2
         self.scrollView.addGestureRecognizer(doubleTapRecognizer)
         let singleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleSingleTap))
@@ -39,14 +39,12 @@ class P9SImageViewerCell: UICollectionViewCell, UIScrollViewDelegate {
         self.scrollView.addGestureRecognizer(singleTapRecognizer)
     }
 
-    func handleSingleTap()
-    {
+   @objc func handleSingleTap() {
         self.parentViewController.navigationController?.navigationBar.isHidden = !(self.parentViewController.navigationController?.navigationBar.isHidden)!
         self.parentViewController.navigationController?.navigationBar.isTranslucent = !(self.parentViewController.navigationController?.navigationBar.isTranslucent)!
     }
     
-    func handleDoubleTap(recognizer: UITapGestureRecognizer)
-    {
+    @objc func handleDoubleTap(recognizer: UITapGestureRecognizer) {
         if self.scrollView.zoomScale != 1.0 {
             self.scrollView.setZoomScale(1.0, animated: true)
         } else {

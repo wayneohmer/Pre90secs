@@ -51,11 +51,11 @@ class P9SDateTextField: UITextField {
         return super.becomeFirstResponder()
     }
     
-    func dateUpdated(datePicker:UIDatePicker) {
+    @objc func dateUpdated(datePicker:UIDatePicker) {
         self.text = self.isShort ? datePicker.date.shortFormatted() : datePicker.date.formatedDateTime()
     }
     
-    func doneButtonTouched() {
+    @objc func doneButtonTouched() {
         self.resignFirstResponder()
     }
     
